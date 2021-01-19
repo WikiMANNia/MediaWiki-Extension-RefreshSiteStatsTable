@@ -1,0 +1,7 @@
+{
+	"@metadata": {
+		"authors": [ "WikiMANNia" ]
+	},
+	"refreshsitestatstable-name": "{{name}}",
+	"refreshsitestatstable-desc": "{{desc|name=RefreshSiteStatsTable|url=https://www.mediawiki.org/wiki/Extension:RefreshSiteStatsTable}}"
+}

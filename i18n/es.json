@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [ "WikiMANNia" ]
+	},
+	"refreshsitestatstable-name": "SiteStats Table Refresher",
+	"refreshsitestatstable-desc": "Ofrece una [[Special:RefreshSiteStatsTable|página especial]] para refrescar el valor de los campos “ss_good_articles”, “ss_total_pages”, y “ss_users“ en la tabla “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]”.",
+	"refreshsitestatstable-intro": "Aquí las inconsistencias en la tabla “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]” pueden ser corregidas automáticamente.",
+	"refreshsitestatstable-rights": "Corregir las inconsistencias en la tabla “site_stats”.",
+	"refreshsitestatstable-title": "Actualiza la tabla “site_stats”",
+	"refreshsitestatstable-good-articles": "Número de artículos válidos",
+	"refreshsitestatstable-total-pages": "Número de páginas totales",
+	"refreshsitestatstable-images": "Número de imagenes",
+	"refreshsitestatstable-users": "Número de usuarios",
+	"refreshsitestatstable-db-count": "determinado a partir de la consulta de la base de datos:",
+	"refreshsitestatstable-statistic": "leído del campo de la estadística:",
+	"refreshsitestatstable-error": "Entradas en la base de datos de MediaWiki es incorrecto.",
+	"refreshsitestatstable-inconsistent-good": "El número de artículos válidos en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
+	"refreshsitestatstable-inconsistent-total": "El número de páginas totales en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
+	"refreshsitestatstable-inconsistent-images": "El número de imagenes en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
+	"refreshsitestatstable-inconsistent-users": "El número de usuarios en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
+	"refreshsitestatstable-status-ok-good": "El número de artículos válidos en la base de datos de MediaWiki es correcto.",
+	"refreshsitestatstable-status-ok-total": "El número de páginas totales en la base de datos de MediaWiki es correcto.",
+	"refreshsitestatstable-status-ok-images": "El número de imagenes en la base de datos de MediaWiki es correcto.",
+	"refreshsitestatstable-status-ok-users": "El número de usuarios en la base de datos de MediaWiki es correcto.",
+	"refreshsitestatstable-status-error": "Entradas en la base de datos de MediaWiki es incorrecto. El error no pudo ser arreglado."
+}

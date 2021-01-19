@@ -1,0 +1,26 @@
+{
+	"@metadata": {
+		"authors": [ "WikiMANNia" ]
+	},
+	"refreshsitestatstable-name": "SiteStats-Tabellen-Aktualisierer",
+	"refreshsitestatstable-desc": "Bietet eine [[Special:RefreshSiteStatsTable|Spezialseite]], zum den Wert der Felder „ss_good_articles“, „ss_total_pages“ und „ss_users“ in der Tabelle „[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]“ zu aktualisieren.",
+	"refreshsitestatstable-intro": "Hier können automatisch Inkonsistenzen in der Tabelle „[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]“ korrigiert werden.",
+	"refreshsitestatstable-rights": "Inkonsistenzen in der Tabelle „site_stats“ korrigieren.",
+	"refreshsitestatstable-title": "Aktualisieren der Tabelle „site_stats“",
+	"refreshsitestatstable-good-articles": "Anzahl gültiger Artikel",
+	"refreshsitestatstable-total-pages": "Anzahl der insgesamt vorhandenen Seiten",
+	"refreshsitestatstable-images": "Anzahl der vorhandener Bilder",
+	"refreshsitestatstable-users": "Anzahl der Benutzer",
+	"refreshsitestatstable-db-count": "aus DB-Abfrage ermittelt:",
+	"refreshsitestatstable-statistic": "aus Statistik-Feld ausgelesen:",
+	"refreshsitestatstable-error": "Einträge in der MediaWiki-Datenbank sind fehlerhaft.",
+	"refreshsitestatstable-inconsistent-good": "Die Anzahl der gültigen Artikel in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
+	"refreshsitestatstable-inconsistent-total": "Die Gesamtzahl der Seiten in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
+	"refreshsitestatstable-inconsistent-images": "Die Anzahl der Bilder in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
+	"refreshsitestatstable-inconsistent-users": "Die Anzahl der Benutzer in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
+	"refreshsitestatstable-status-ok-good": "Die Anzahl der gültigen Artikel in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-ok-total": "Die Gesamtzahl der Seiten in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-ok-images": "Die Anzahl der Bilder in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-ok-users": "Die Anzahl der Benutzer in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-error": "Einträge in der MediaWiki-Datenbank sind fehlerhaft. Der Fehler konnte nicht behoben werden."
+}

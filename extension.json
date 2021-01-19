@@ -1,0 +1,27 @@
+{
+	"name": "RefreshSiteStatsTable",
+	"namemsg": "refreshsitestatstable-name",
+	"version": "1.0.0",
+	"author": [
+		"[//wikimannia.org WikiMANNia]"
+	],
+	"url": "https://github.com/WikiMANNia/Mediawiki-Extension-RefreshSiteStatsTable",
+	"descriptionmsg": "refreshsitestatstable-desc",
+	"type": "specialpage",
+	"license-name": "GPL-3.0-or-later",
+	"MessagesDirs": {
+		"RefreshSiteStatsTable": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"RefreshSiteStatsTableAlias": "RefreshSiteStatsTable.i18n.alias.php"
+	},
+	"SpecialPages": {
+		"RefreshSiteStatsTable": "RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable"
+	},
+	"AutoloadClasses": {
+		"RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable": "includes/SpecialRefreshSiteStatsTable.php"
+	},
+	"manifest_version": 1
+}
