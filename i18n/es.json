@@ -13,14 +13,13 @@
 	"refreshsitestatstable-users": "Número de usuarios",
 	"refreshsitestatstable-db-count": "determinado a partir de la consulta de la base de datos:",
 	"refreshsitestatstable-statistic": "leído del campo de la estadística:",
-	"refreshsitestatstable-error": "Entradas en la base de datos de MediaWiki es incorrecto.",
+	"refreshsitestatstable-status": "Estado",
+	"refreshsitestatstable-status-msg": "El estado en la base de datos de MediaWiki es $1.",
+	"refreshsitestatstable-status-msg-error": "incorrecto",
+	"refreshsitestatstable-status-msg-ok": "correcto",
 	"refreshsitestatstable-inconsistent-good": "El número de artículos válidos en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
 	"refreshsitestatstable-inconsistent-total": "El número de páginas totales en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
 	"refreshsitestatstable-inconsistent-images": "El número de imagenes en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
 	"refreshsitestatstable-inconsistent-users": "El número de usuarios en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
-	"refreshsitestatstable-status-ok-good": "El número de artículos válidos en la base de datos de MediaWiki es correcto.",
-	"refreshsitestatstable-status-ok-total": "El número de páginas totales en la base de datos de MediaWiki es correcto.",
-	"refreshsitestatstable-status-ok-images": "El número de imagenes en la base de datos de MediaWiki es correcto.",
-	"refreshsitestatstable-status-ok-users": "El número de usuarios en la base de datos de MediaWiki es correcto.",
 	"refreshsitestatstable-status-error": "Entradas en la base de datos de MediaWiki es incorrecto. El error no pudo ser arreglado."
 }
