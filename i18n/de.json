@@ -21,5 +21,9 @@
 	"refreshsitestatstable-inconsistent-total": "Die Gesamtzahl der Seiten in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
 	"refreshsitestatstable-inconsistent-images": "Die Anzahl der Bilder in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
 	"refreshsitestatstable-inconsistent-users": "Die Anzahl der Benutzer in der MediaWiki-Datenbank war fehlerhaft und wurde erfolgreich von $1 auf $2 korrigiert.",
+	"refreshsitestatstable-status-ok-good": "Die Anzahl der gültigen Artikel in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-ok-total": "Die Gesamtzahl der Seiten in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-ok-images": "Die Anzahl der Bilder in der MediaWiki-Datenbank ist korrekt.",
+	"refreshsitestatstable-status-ok-users": "Die Anzahl der Benutzer in der MediaWiki-Datenbank ist korrekt.",
 	"refreshsitestatstable-status-error": "Einträge in der MediaWiki-Datenbank sind fehlerhaft. Der Fehler konnte nicht behoben werden."
 }
