@@ -10,9 +10,16 @@
  * @file
  */
 
+/**
+* backward compatibility to MediaWiki v1.25 and v1.26
+* fix an issue that was introduced here:
+* https://github.com/WikiMANNia/mediawiki-extensions-HitCounters/commit/822140f6d96974f5051449837e7f46a771d5f6a5#diff-1b6cef982bd7ace2232d91536185b83a
+* DB_REPLICA remains undefined in MediaWiki before v1.27
+*/
+defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
+
 namespace RefreshSiteStatsTable;
 
-use DBConnect;
 use Html;
 use SpecialPage;
 use Xml;
@@ -29,8 +36,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'RefreshSiteStatsTable' );
 
-		$this->mDBr = DBConnect::getReadingConnect();
-		$this->mDBw = DBConnect::getWritingConnect();
+		$this->mDBr = wfGetDB( DB_REPLICA );
+		$this->mDBw = wfGetDB( DB_MASTER );
  		$this->mPermission = true;
 	}
 
