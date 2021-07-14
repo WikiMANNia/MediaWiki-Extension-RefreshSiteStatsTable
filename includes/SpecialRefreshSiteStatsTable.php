@@ -10,6 +10,9 @@
  * @file
  */
 
+namespace RefreshSiteStatsTable;
+use Title;
+
 /**
 * backward compatibility to MediaWiki v1.25 and v1.26
 * fix an issue that was introduced here:
@@ -17,8 +20,6 @@
 * DB_REPLICA remains undefined in MediaWiki before v1.27
 */
 defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
-
-namespace RefreshSiteStatsTable;
 
 use Html;
 use SpecialPage;
@@ -75,6 +76,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		} else {
 			$this->showForm( $action );
 		}
+
+		$output->returnToMain( false, Title::makeTitleSafe( NS_SPECIAL, 'Statistics' ) );
 	}
 
 	/**
