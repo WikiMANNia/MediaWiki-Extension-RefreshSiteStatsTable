@@ -3,7 +3,7 @@
 		"authors": [ "WikiMANNia" ]
 	},
 	"refreshsitestatstable-name": "SiteStats Table Refresher",
-	"refreshsitestatstable-desc": "Ofrece una [[Special:RefreshSiteStatsTable|página especial]] para refrescar el valor de los campos “ss_good_articles”, “ss_total_pages”, y “ss_users“ en la tabla “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]”.",
+	"refreshsitestatstable-desc": "Ofrece una [[Special:RefreshSiteStatsTable|página especial]] para refrescar el valor de los campos “ss_good_articles”, “ss_total_pages” y “ss_users“ en la tabla “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]”.",
 	"refreshsitestatstable-intro": "Aquí las inconsistencias en la tabla “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]” pueden ser corregidas automáticamente.",
 	"refreshsitestatstable-rights": "Corregir las inconsistencias en la tabla “site_stats”.",
 	"refreshsitestatstable-title": "Actualiza la tabla “site_stats”",
