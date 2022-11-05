@@ -8,7 +8,7 @@ El mantenimiento de la extensión de MediaWiki [RefreshSiteStatsTable](https://w
 
 ## Description
 
-Refreshes the value of the fields `ss_good_articles`, `ss_total_pages`, and `ss_users` in the table `[site_stats](https://www.mediawiki.org/wiki/Manual:Site_stats_table)`.
+Refreshes the value of the fields `ss_good_articles`, `ss_total_pages`, and `ss_users` in the table “[site_stats](https://www.mediawiki.org/wiki/Manual:Site_stats_table)”.
 
 ## Version history
 
