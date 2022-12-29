@@ -14,11 +14,18 @@ namespace RefreshSiteStatsTable;
 use Title;
 
 /**
-* backward compatibility to MediaWiki v1.25 and v1.26
+* backward compatibility
 * fix an issue that was introduced here:
 * https://github.com/WikiMANNia/mediawiki-extensions-HitCounters/commit/822140f6d96974f5051449837e7f46a771d5f6a5#diff-1b6cef982bd7ace2232d91536185b83a
-* DB_REPLICA remains undefined in MediaWiki before v1.27
+* @since 1.31.15
+* @since 1.35.3
+* define( 'DB_PRIMARY', ILoadBalancer::DB_PRIMARY )
+* DB_PRIMARY remains undefined in MediaWiki before v1.31.15/v1.35.3
+* @since 1.28.0
+* define( 'DB_REPLICA', ILoadBalancer::DB_REPLICA )
+* DB_REPLICA remains undefined in MediaWiki before v1.28
 */
+defined('DB_PRIMARY') or define('DB_PRIMARY', DB_MASTER);
 defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
 
 use Html;
@@ -40,7 +47,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		parent::__construct( 'RefreshSiteStatsTable' );
 
 		$this->mDBr = wfGetDB( DB_REPLICA );
-		$this->mDBw = wfGetDB( DB_MASTER );
+		$this->mDBw = wfGetDB( DB_PRIMARY );
  		$this->mPermission = true;
  		$this->mErrorClass   = self::isBeforeVersion( '1.38' ) ? 'errorbox'   : 'mw-message-box-error';
  		$this->mSuccessClass = self::isBeforeVersion( '1.38' ) ? 'successbox' : 'mw-message-box-success';
