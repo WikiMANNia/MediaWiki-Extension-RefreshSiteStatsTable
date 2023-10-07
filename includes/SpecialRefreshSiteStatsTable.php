@@ -15,8 +15,6 @@ use Title;
 
 /**
 * backward compatibility
-* fix an issue that was introduced here:
-* https://github.com/WikiMANNia/mediawiki-extensions-HitCounters/commit/822140f6d96974f5051449837e7f46a771d5f6a5#diff-1b6cef982bd7ace2232d91536185b83a
 * @since 1.31.15
 * @since 1.35.3
 * define( 'DB_PRIMARY', ILoadBalancer::DB_PRIMARY )
@@ -36,7 +34,6 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 
 	private $mDBr;
 	private $mDBw;
- 	private $mPermission;
 	private $mErrorClass;
 	private $mSuccessClass;
 
@@ -48,7 +45,6 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 
 		$this->mDBr = wfGetDB( DB_REPLICA );
 		$this->mDBw = wfGetDB( DB_PRIMARY );
- 		$this->mPermission = true;
  		$this->mErrorClass   = self::isBeforeVersion( '1.38' ) ? 'errorbox'   : 'mw-message-box-error';
  		$this->mSuccessClass = self::isBeforeVersion( '1.38' ) ? 'successbox' : 'mw-message-box-success';
 	}
