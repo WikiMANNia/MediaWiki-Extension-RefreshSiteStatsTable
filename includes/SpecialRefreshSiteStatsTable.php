@@ -10,8 +10,7 @@
  * @file
  */
 
-namespace RefreshSiteStatsTable;
-use Title;
+namespace MediaWiki\Extension\RefreshSiteStatsTable;
 
 /**
 * backward compatibility
@@ -28,6 +27,7 @@ defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
 
 use Html;
 use SpecialPage;
+use Title;
 use Xml;
 
 class SpecialRefreshSiteStatsTable extends SpecialPage {
@@ -36,6 +36,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	private $mDBw;
 	private $mErrorClass;
 	private $mSuccessClass;
+	private $mERROR_msg;
+	private $mOK_msg;
 
 	/**
 	 * Constructor - sets up the new special page
@@ -47,6 +49,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$this->mDBw = wfGetDB( DB_PRIMARY );
  		$this->mErrorClass   = self::isBeforeVersion( '1.38' ) ? 'errorbox'   : 'mw-message-box-error';
  		$this->mSuccessClass = self::isBeforeVersion( '1.38' ) ? 'successbox' : 'mw-message-box-success';
+		$this->mERROR_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
+		$this->mOK_msg    = '<span class="' . $this->mSuccessClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() . '</span>';
 	}
 
 	public function doesWrites() {
@@ -102,11 +106,9 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$attrs_disabled = [ 'disabled' => 'disabled' ];
 		$label = [ 'class' => 'mw-label' ];
 		$input = [ 'class' => 'mw-input' ];
-		$OK_msg    = '<span class="' . $this->mSuccessClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-ok'  )->text() . '</span>';
-		$ERROR_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
 		$submit_button_attrs = [ 'tabindex' => 100, 'id' => 'mw-refreshsitestatstable-{$action}-submit' ];
 
-		$good_articles_status_msg = $total_pages_status_msg = $images_status_msg = $users_status_msg = $OK_msg;
+		$good_articles_status_msg = $total_pages_status_msg = $images_status_msg = $users_status_msg = $this->mOK_msg;
 		$anzahl_counted_good  = (int)$this->mDBr->selectField( 'page', 'COUNT(*)', [ 'page_namespace' => NS_MAIN, 'page_is_redirect' => 0 ], __METHOD__ );
 		$anzahl_stat_db_good  = (int)$this->mDBr->selectField( 'site_stats', 'ss_good_articles', [ 'ss_row_id' => 1 ], __METHOD__ );
 		$anzahl_counted_total = (int)$this->mDBr->selectField( 'page', 'COUNT(*)', [], __METHOD__ );
@@ -118,19 +120,19 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 
 		if ( $anzahl_counted_good !== $anzahl_stat_db_good ) {
 			$status_OK = false;
-			$good_articles_status_msg = $ERROR_msg;
+			$good_articles_status_msg = $this->mERROR_msg;
 		}
 		if ( $anzahl_counted_total !== $anzahl_stat_db_total ) {
 			$status_OK = false;
-			$total_pages_status_msg = $ERROR_msg;
+			$total_pages_status_msg = $this->mERROR_msg;
 		}
 		if ( $anzahl_counted_images !== $anzahl_stat_db_images ) {
 			$status_OK = false;
-			$images_status_msg = $ERROR_msg;
+			$images_status_msg = $this->mERROR_msg;
 		}
 		if ( $anzahl_counted_users !== $anzahl_stat_db_users ) {
 			$status_OK = false;
-			$users_status_msg = $ERROR_msg;
+			$users_status_msg = $this->mERROR_msg;
 		}
 		if ( $status_OK ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
