@@ -21,7 +21,7 @@
 		"RefreshSiteStatsTable": "MediaWiki\\Extension\\RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable"
 	},
 	"AutoloadClasses": {
-		"RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable": "includes/SpecialRefreshSiteStatsTable.php"
+		"MediaWiki\\Extension\\RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable": "includes/SpecialRefreshSiteStatsTable.php"
 	},
 	"manifest_version": 1
 }

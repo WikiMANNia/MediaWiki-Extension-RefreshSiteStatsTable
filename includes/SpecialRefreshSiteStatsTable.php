@@ -323,6 +323,15 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	}
 
 	/**
+	 * Under which header this special page is listed in Special:SpecialPages
+	 *
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'wiki';
+	}
+
+	/**
 	 * Output error message stuff :)
 	 */
 	private function error() {
@@ -346,9 +355,5 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		global $wgVersion;
 
 		return version_compare( $wgVersion, $version, '<' );
-	}
-
-	protected function getGroupName() {
-		return 'wiki';
 	}
 }
