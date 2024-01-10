@@ -58,15 +58,6 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	}
 
 	/**
-	 * Different description will be shown on Special:SpecialPage depending on
-	 * whether the user can modify the data.
-	 * @return String
-	 */
-	public function getDescription() {
-		return $this->msg( 'refreshsitestatstable-rights' )->plain();
-	}
-
-	/**
 	 * Show the page to the user
 	 *
 	 * @param string|null $sub The subpage string argument (if any).
@@ -323,6 +314,16 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	}
 
 	/**
+	 * Different description will be shown on Special:SpecialPage depending on
+	 * whether the user can modify the data.
+	 * @return string|Message
+	 */
+	public function getDescription() {
+		$msg = $this->msg( 'refreshsitestatstable-rights' );
+		return self::isBeforeVersion( '1.41' ) ? $msg->text() : $msg;
+	}
+
+	/**
 	 * Under which header this special page is listed in Special:SpecialPages
 	 *
 	 * @return string
@@ -351,7 +352,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 * string $version
 	 * return bool
 	 */
-	private static function isBeforeVersion( $version = '1.38' ) {
+	private static function isBeforeVersion( $version ) {
 		global $wgVersion;
 
 		return version_compare( $wgVersion, $version, '<' );

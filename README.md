@@ -35,3 +35,7 @@ This extension works from REL1_25 and has been tested up to MediaWiki version `1
 1.2.0
 
 * Added compatibility to MediaWiki v1.38.
+
+1.3.0
+
+* Added compatibility to MediaWiki v1.41.
