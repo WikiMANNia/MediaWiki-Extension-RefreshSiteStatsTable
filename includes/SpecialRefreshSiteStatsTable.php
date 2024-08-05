@@ -12,6 +12,8 @@
 
 namespace MediaWiki\Extension\RefreshSiteStatsTable;
 
+use MediaWiki\MediaWikiServices;
+
 /**
 * backward compatibility
 * @since 1.31.15
@@ -45,8 +47,14 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'RefreshSiteStatsTable' );
 
-		$this->mDBr = wfGetDB( DB_REPLICA );
-		$this->mDBw = wfGetDB( DB_PRIMARY );
+		if ( self::isBeforeVersion( '1.42' ) ) {
+			$this->mDBr = wfGetDB( DB_REPLICA );
+			$this->mDBw = wfGetDB( DB_PRIMARY );
+		} else {
+			$services = MediaWikiServices::getInstance();
+			$this->mDBr = $services->getConnectionProvider()->getReplicaDatabase();
+			$this->mDBw = $services->getConnectionProvider()->getPrimaryDatabase();
+		}
  		$this->mErrorClass   = self::isBeforeVersion( '1.38' ) ? 'errorbox'   : 'mw-message-box-error';
  		$this->mSuccessClass = self::isBeforeVersion( '1.38' ) ? 'successbox' : 'mw-message-box-success';
 		$this->mERROR_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
