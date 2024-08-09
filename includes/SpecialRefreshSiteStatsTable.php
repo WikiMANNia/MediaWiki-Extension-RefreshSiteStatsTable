@@ -2,7 +2,7 @@
 /**
  * SpecialPage for RefreshSiteStatsTable extension
  *
- * Copyright © 2022 WikiMANNia <chef@wikimannia.org>
+ * Copyright © 2024 WikiMANNia <chef@wikimannia.org>
  * https://www.wikimannia.org/
  *
  * This program is free software.
@@ -51,9 +51,9 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 			$this->mDBr = wfGetDB( DB_REPLICA );
 			$this->mDBw = wfGetDB( DB_PRIMARY );
 		} else {
-			$services = MediaWikiServices::getInstance();
-			$this->mDBr = $services->getConnectionProvider()->getReplicaDatabase();
-			$this->mDBw = $services->getConnectionProvider()->getPrimaryDatabase();
+			$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
+			$this->mDBr = $connection_provider->getReplicaDatabase();
+			$this->mDBw = $connection_provider->getPrimaryDatabase();
 		}
  		$this->mErrorClass   = self::isBeforeVersion( '1.38' ) ? 'errorbox'   : 'mw-message-box-error';
  		$this->mSuccessClass = self::isBeforeVersion( '1.38' ) ? 'successbox' : 'mw-message-box-success';
