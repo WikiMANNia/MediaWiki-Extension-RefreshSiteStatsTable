@@ -43,3 +43,7 @@ This extension works from REL1_25 and has been tested up to MediaWiki version `1
 1.3.1
 
 * Added compatibility to MediaWiki v1.42.
+
+1.3.2
+
+* Added compatibility to MediaWiki v1.43.

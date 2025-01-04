@@ -72,7 +72,11 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	public function execute( $sub ) {
 		$output = $this->getOutput();
-		$output->setPageTitle( $this->msg( 'refreshsitestatstable-title' ) );
+		if ( method_exists( $output, 'setPageTitleMsg' ) ) {
+			$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
+		} else {
+			$output->setPageTitle( $this->msg( 'refreshsitestatstable-title' ) );
+		}
 		$output->addWikiMsg( 'refreshsitestatstable-intro' );
 
 		$request = $this->getRequest();
