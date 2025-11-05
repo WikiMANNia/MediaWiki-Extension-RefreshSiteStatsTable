@@ -22,10 +22,10 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 
 	private $mDBr;
 	private $mDBw;
-	private $mErrorClass;
-	private $mSuccessClass;
-	private $mERROR_msg;
-	private $mOK_msg;
+	private string $mErrorClass;
+	private string $mSuccessClass;
+	private string $mERROR_msg;
+	private string $mOK_msg;
 
 	/**
 	 * Constructor - sets up the new special page
@@ -211,7 +211,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						Html::rawElement( 'tr', null,
 							Html::rawElement( 'td', null, '' ) .
 							Html::rawElement( 'td', [ 'class' => 'mw-submit' ],
-								Xml::submitButton( $this->msg( $button )->text(),
+								Html::submitButton( $this->msg( $button )->text(),
 									$submit_button_attrs
 								)
 							)
