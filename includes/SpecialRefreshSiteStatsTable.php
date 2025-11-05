@@ -12,24 +12,10 @@
 
 namespace MediaWiki\Extension\RefreshSiteStatsTable;
 
+use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
-
-/**
-* backward compatibility
-* @since 1.31.15
-* @since 1.35.3
-* define( 'DB_PRIMARY', ILoadBalancer::DB_PRIMARY )
-* DB_PRIMARY remains undefined in MediaWiki before v1.31.15/v1.35.3
-* @since 1.28.0
-* define( 'DB_REPLICA', ILoadBalancer::DB_REPLICA )
-* DB_REPLICA remains undefined in MediaWiki before v1.28
-*/
-defined('DB_PRIMARY') or define('DB_PRIMARY', DB_MASTER);
-defined('DB_REPLICA') or define('DB_REPLICA', DB_SLAVE);
-
-use Html;
+use MediaWiki\Title\Title;
 use SpecialPage;
-use Title;
 use Xml;
 
 class SpecialRefreshSiteStatsTable extends SpecialPage {
@@ -47,16 +33,11 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'RefreshSiteStatsTable' );
 
-		if ( self::isBeforeVersion( '1.42' ) ) {
-			$this->mDBr = wfGetDB( DB_REPLICA );
-			$this->mDBw = wfGetDB( DB_PRIMARY );
-		} else {
-			$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
-			$this->mDBr = $connection_provider->getReplicaDatabase();
-			$this->mDBw = $connection_provider->getPrimaryDatabase();
-		}
- 		$this->mErrorClass   = self::isBeforeVersion( '1.38' ) ? 'errorbox'   : 'mw-message-box-error';
- 		$this->mSuccessClass = self::isBeforeVersion( '1.38' ) ? 'successbox' : 'mw-message-box-success';
+		$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
+		$this->mDBr = $connection_provider->getReplicaDatabase();
+		$this->mDBw = $connection_provider->getPrimaryDatabase();
+ 		$this->mErrorClass   = 'mw-message-box-error';
+ 		$this->mSuccessClass = 'mw-message-box-success';
 		$this->mERROR_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
 		$this->mOK_msg    = '<span class="' . $this->mSuccessClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() . '</span>';
 	}
@@ -72,11 +53,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	public function execute( $sub ) {
 		$output = $this->getOutput();
-		if ( method_exists( $output, 'setPageTitleMsg' ) ) {
-			$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
-		} else {
-			$output->setPageTitle( $this->msg( 'refreshsitestatstable-title' ) );
-		}
+		$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
 		$output->addWikiMsg( 'refreshsitestatstable-intro' );
 
 		$request = $this->getRequest();
@@ -332,7 +309,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	public function getDescription() {
 		$msg = $this->msg( 'refreshsitestatstable-rights' );
-		return self::isBeforeVersion( '1.41' ) ? $msg->text() : $msg;
+		return $msg;
 	}
 
 	/**
@@ -358,15 +335,5 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	private function success() {
 		$args = func_get_args();
 		$this->getOutput()->wrapWikiMsg( '<div class="' . $this->mSuccessClass . '">$1</div><br style="clear:both" />', $args );
-	}
-
-	/**
-	 * string $version
-	 * return bool
-	 */
-	private static function isBeforeVersion( $version ) {
-		global $wgVersion;
-
-		return version_compare( $wgVersion, $version, '<' );
 	}
 }
