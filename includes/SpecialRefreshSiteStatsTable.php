@@ -122,7 +122,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		}
 
 		$formContent2 =
-				Html::rawElement( 'tr', null,
+				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
 						'&nbsp;'
 					) .
@@ -143,7 +143,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						)
 					)
 				) .
-				Html::rawElement( 'tr', null,
+				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
 						Xml::label( $this->msg( 'refreshsitestatstable-db-count' )->text(), 'mw-refreshsitestatstable-db-count'
 						)
@@ -161,7 +161,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						$anzahl_counted_users
 					)
 				) .
-				Html::rawElement( 'tr', null,
+				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
 						Xml::label( $this->msg( 'refreshsitestatstable-statistic' )->text(), 'mw-refreshsitestatstable-statistic'
 						)
@@ -179,7 +179,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						$anzahl_stat_db_users
 					)
 				) .
-				Html::rawElement( 'tr', null,
+				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
 						Xml::label( $this->msg( 'refreshsitestatstable-status' )->text(), 'mw-refreshsitestatstable-status'
 						)
@@ -208,8 +208,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 					Html::rawElement( 'p', null, $intromessage ) .
 					Html::rawElement( 'table', [ 'id' => 'mw-refreshsitestatstable-{$action}' ],
 						$formContent2 .
-						Html::rawElement( 'tr', null,
-							Html::rawElement( 'td', null, '' ) .
+						Html::rawElement( 'tr', [],
+							Html::rawElement( 'td', [], '' ) .
 							Html::rawElement( 'td', [ 'class' => 'mw-submit' ],
 								Html::submitButton( $this->msg( $button )->text(),
 									$submit_button_attrs
