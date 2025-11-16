@@ -116,9 +116,9 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		}
 		if ( $status_OK ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
-			$intromessage .= Html::rawElement( 'p', null, $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() )->text() );
+			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() )->text() );
 		} else {
-			$intromessage .= Html::rawElement( 'p', null, $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-error' )->text() )->text() );
+			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-error' )->text() )->text() );
 		}
 
 		$formContent2 =
@@ -205,7 +205,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						'method' => 'post',
 						'action' => $this->getPageTitle()->getLocalURL( [ 'action' => $submit_action ] )
 					],
-					Html::rawElement( 'p', null, $intromessage ) .
+					Html::rawElement( 'p', [], $intromessage ) .
 					Html::rawElement( 'table', [ 'id' => 'mw-refreshsitestatstable-{$action}' ],
 						$formContent2 .
 						Html::rawElement( 'tr', [],
