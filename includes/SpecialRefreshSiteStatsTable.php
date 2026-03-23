@@ -12,11 +12,11 @@
 
 namespace MediaWiki\Extension\RefreshSiteStatsTable;
 
-use MediaWiki\Context\RequestContext;
-use MediaWiki\Html\Html;
+use Html;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Title\Title;
+use RequestContext;
 use SpecialPage;
+use Title;
 use Xml;
 
 class SpecialRefreshSiteStatsTable extends SpecialPage {
@@ -36,9 +36,14 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'RefreshSiteStatsTable' );
 
-		$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
-		$this->mDBr = $connection_provider->getReplicaDatabase();
-		$this->mDBw = $connection_provider->getPrimaryDatabase();
+		if ( self::isBeforeVersion( '1.42' ) ) {
+			$this->mDBr = wfGetDB( DB_REPLICA );
+			$this->mDBw = wfGetDB( DB_PRIMARY );
+		} else {
+			$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
+			$this->mDBr = $connection_provider->getReplicaDatabase();
+			$this->mDBw = $connection_provider->getPrimaryDatabase();
+		}
 		$ctx = RequestContext::getMain();
 		$user = $ctx->getUser();
 		$this->mAllowRefreshSiteStatsTable = (bool)$user->isAllowed( 'AllowRefreshSiteStatsTable' );
@@ -60,7 +65,11 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	public function execute( $sub ) {
 		$output = $this->getOutput();
-		$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
+		if ( method_exists( $output, 'setPageTitleMsg' ) ) {
+			$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
+		} else {
+			$output->setPageTitle( $this->msg( 'refreshsitestatstable-title' ) );
+		}
 		$output->addWikiMsg( 'refreshsitestatstable-intro' );
 
 		$request = $this->getRequest();
@@ -329,7 +338,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	public function getDescription() {
 		$msg = $this->msg( 'refreshsitestatstable-rights' );
-		return $msg;
+		return self::isBeforeVersion( '1.41' ) ? $msg->text() : $msg;
 	}
 
 	/**
@@ -362,5 +371,15 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	private function success() {
 		$args = func_get_args();
 		$this->getOutput()->wrapWikiMsg( '<div class="' . $this->mSuccessClass . '">$1</div><br style="clear:both" />', $args );
+	}
+
+	/**
+	 * string $version
+	 * return bool
+	 */
+	private static function isBeforeVersion( $version ) {
+		global $wgVersion;
+
+		return version_compare( $wgVersion, $version, '<' );
 	}
 }
