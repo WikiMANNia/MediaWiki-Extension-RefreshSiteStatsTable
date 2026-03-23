@@ -1,7 +1,7 @@
 {
 	"name": "RefreshSiteStatsTable",
 	"namemsg": "refreshsitestatstable-name",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"author": [
 		"[//wikimannia.org WikiMANNia]"
 	],
@@ -11,6 +11,29 @@
 	"license-name": "GPL-3.0-or-later",
 	"requires": {
 		"MediaWiki": ">= 1.42.0"
+	},
+	"AvailableRights": [
+		"AllowRefreshSiteStatsTable"
+	],
+	"GroupPermissions": {
+		"*": {
+			"AllowRefreshSiteStatsTable": false
+		},
+		"user": {
+			"AllowRefreshSiteStatsTable": false
+		},
+		"autoconfirmed": {
+			"AllowRefreshSiteStatsTable": false
+		},
+		"bot": {
+			"AllowRefreshSiteStatsTable": false
+		},
+		"trusted": {
+			"AllowRefreshSiteStatsTable": true
+		},
+		"sysop": {
+			"AllowRefreshSiteStatsTable": true
+		}
 	},
 	"MessagesDirs": {
 		"RefreshSiteStatsTable": [

@@ -17,6 +17,7 @@
 	"refreshsitestatstable-status-msg": "El estado en la base de datos de MediaWiki es $1.",
 	"refreshsitestatstable-status-msg-error": "incorrecto",
 	"refreshsitestatstable-status-msg-ok": "correcto",
+	"refreshsitestatstable-status-msg-unknown": "desconocido",
 	"refreshsitestatstable-inconsistent-good": "El número de artículos válidos en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
 	"refreshsitestatstable-inconsistent-total": "El número de páginas totales en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",
 	"refreshsitestatstable-inconsistent-images": "El número de imagenes en la base de datos de MediaWiki era incorrecto y fue corregido de $1 a $2 con éxito.",

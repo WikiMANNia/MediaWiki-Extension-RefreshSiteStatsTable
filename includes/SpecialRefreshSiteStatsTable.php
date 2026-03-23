@@ -12,6 +12,7 @@
 
 namespace MediaWiki\Extension\RefreshSiteStatsTable;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
@@ -22,10 +23,12 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 
 	private $mDBr;
 	private $mDBw;
+	private bool $mAllowRefreshSiteStatsTable;
 	private string $mErrorClass;
 	private string $mSuccessClass;
 	private string $mERROR_msg;
 	private string $mOK_msg;
+	private string $mUNKNOWN_msg;
 
 	/**
 	 * Constructor - sets up the new special page
@@ -36,10 +39,14 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
 		$this->mDBr = $connection_provider->getReplicaDatabase();
 		$this->mDBw = $connection_provider->getPrimaryDatabase();
+		$ctx = RequestContext::getMain();
+		$user = $ctx->getUser();
+		$this->mAllowRefreshSiteStatsTable = (bool)$user->isAllowed( 'AllowRefreshSiteStatsTable' );
  		$this->mErrorClass   = 'mw-message-box-error';
  		$this->mSuccessClass = 'mw-message-box-success';
-		$this->mERROR_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
-		$this->mOK_msg    = '<span class="' . $this->mSuccessClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() . '</span>';
+		$this->mERROR_msg   = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
+		$this->mOK_msg      = '<span class="' . $this->mSuccessClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() . '</span>';
+		$this->mUNKNOWN_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-unknown' )->text() . '</span>';
 	}
 
 	public function doesWrites() {
@@ -80,6 +87,10 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$submit_action = 'submit';
 		$button = 'ok';
 		$status_OK = true;
+		$anzahl_counted_good   = 0;
+		$anzahl_counted_total  = 0;
+		$anzahl_counted_images = 0;
+		$anzahl_counted_users  = 0;
 
 		$topmessage   = $this->msg( 'refreshsitestatstable-title' )->text();
 		$intromessage = '';
@@ -89,32 +100,40 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$submit_button_attrs = [ 'tabindex' => 100, 'id' => 'mw-refreshsitestatstable-{$action}-submit' ];
 
 		$good_articles_status_msg = $total_pages_status_msg = $images_status_msg = $users_status_msg = $this->mOK_msg;
-		$anzahl_counted_good  = (int)$this->mDBr->selectField( 'page', 'COUNT(*)', [ 'page_namespace' => NS_MAIN, 'page_is_redirect' => 0 ], __METHOD__ );
-		$anzahl_stat_db_good  = (int)$this->mDBr->selectField( 'site_stats', 'ss_good_articles', [ 'ss_row_id' => 1 ], __METHOD__ );
-		$anzahl_counted_total = (int)$this->mDBr->selectField( 'page', 'COUNT(*)', [], __METHOD__ );
-		$anzahl_stat_db_total = (int)$this->mDBr->selectField( 'site_stats', 'ss_total_pages', [ 'ss_row_id' => 1 ], __METHOD__ );
-		$anzahl_counted_images = (int)$this->mDBr->selectField( 'image', 'COUNT(*)', [], __METHOD__ );
+		$anzahl_stat_db_good   = (int)$this->mDBr->selectField( 'site_stats', 'ss_good_articles', [ 'ss_row_id' => 1 ], __METHOD__ );
+		$anzahl_stat_db_total  = (int)$this->mDBr->selectField( 'site_stats', 'ss_total_pages', [ 'ss_row_id' => 1 ], __METHOD__ );
 		$anzahl_stat_db_images = (int)$this->mDBr->selectField( 'site_stats', 'ss_images', [ 'ss_row_id' => 1 ], __METHOD__ );
-		$anzahl_counted_users = (int)$this->mDBr->selectField( 'user', 'COUNT(*)', [], __METHOD__ );
-		$anzahl_stat_db_users = (int)$this->mDBr->selectField( 'site_stats', 'ss_users', [ 'ss_row_id' => 1 ], __METHOD__ );
+		$anzahl_stat_db_users  = (int)$this->mDBr->selectField( 'site_stats', 'ss_users', [ 'ss_row_id' => 1 ], __METHOD__ );
+		if ( $this->mAllowRefreshSiteStatsTable ) {
+			$anzahl_counted_good   = (int)$this->mDBr->selectField( 'page',  'COUNT(*)', [ 'page_namespace' => NS_MAIN, 'page_is_redirect' => 0 ], __METHOD__ );
+			$anzahl_counted_total  = (int)$this->mDBr->selectField( 'page',  'COUNT(*)', [], __METHOD__ );
+			$anzahl_counted_images = (int)$this->mDBr->selectField( 'image', 'COUNT(*)', [], __METHOD__ );
+			$anzahl_counted_users  = (int)$this->mDBr->selectField( 'user',  'COUNT(*)', [], __METHOD__ );
 
-		if ( $anzahl_counted_good !== $anzahl_stat_db_good ) {
+			if ( $anzahl_counted_good !== $anzahl_stat_db_good ) {
+				$status_OK = false;
+				$good_articles_status_msg = $this->mERROR_msg;
+			}
+			if ( $anzahl_counted_total !== $anzahl_stat_db_total ) {
+				$status_OK = false;
+				$total_pages_status_msg = $this->mERROR_msg;
+			}
+			if ( $anzahl_counted_images !== $anzahl_stat_db_images ) {
+				$status_OK = false;
+				$images_status_msg = $this->mERROR_msg;
+			}
+			if ( $anzahl_counted_users !== $anzahl_stat_db_users ) {
+				$status_OK = false;
+				$users_status_msg = $this->mERROR_msg;
+			}
+		} else {
 			$status_OK = false;
-			$good_articles_status_msg = $this->mERROR_msg;
+			$good_articles_status_msg = $total_pages_status_msg = $images_status_msg = $users_status_msg = $this->mUNKNOWN_msg;
 		}
-		if ( $anzahl_counted_total !== $anzahl_stat_db_total ) {
-			$status_OK = false;
-			$total_pages_status_msg = $this->mERROR_msg;
-		}
-		if ( $anzahl_counted_images !== $anzahl_stat_db_images ) {
-			$status_OK = false;
-			$images_status_msg = $this->mERROR_msg;
-		}
-		if ( $anzahl_counted_users !== $anzahl_stat_db_users ) {
-			$status_OK = false;
-			$users_status_msg = $this->mERROR_msg;
-		}
-		if ( $status_OK ) {
+		if ( !$this->mAllowRefreshSiteStatsTable ) {
+			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
+			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'badaccess-groups', 'trusted' ) );
+		} elseif ( $status_OK ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
 			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() )->text() );
 		} else {
@@ -149,16 +168,16 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						)
 					) .
 					Html::rawElement( 'td', $input,
-						$anzahl_counted_good
+						( $anzahl_counted_good === 0 ) ? '&nbsp;?' : $anzahl_counted_good
 					) .
 					Html::rawElement( 'td', $input,
-						$anzahl_counted_total
+						( $anzahl_counted_total === 0 ) ? '&nbsp;?' : $anzahl_counted_total
 					) .
 					Html::rawElement( 'td', $input,
-						$anzahl_counted_images
+						( $anzahl_counted_images === 0 ) ? '&nbsp;?' : $anzahl_counted_images
 					) .
 					Html::rawElement( 'td', $input,
-						$anzahl_counted_users
+						( $anzahl_counted_users === 0 ) ? '&nbsp;?' : $anzahl_counted_users
 					)
 				) .
 				Html::rawElement( 'tr', [],
@@ -319,6 +338,13 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	protected function getGroupName() {
 		return 'wiki';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function isListed() {
+		return $this->mAllowRefreshSiteStatsTable;
 	}
 
 	/**
