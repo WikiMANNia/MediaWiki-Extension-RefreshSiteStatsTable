@@ -91,6 +91,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$anzahl_counted_total  = 0;
 		$anzahl_counted_images = 0;
 		$anzahl_counted_users  = 0;
+		$userGroups = [ 'trusted', 'sysop' ];
 
 		$topmessage   = $this->msg( 'refreshsitestatstable-title' )->text();
 		$intromessage = '';
@@ -132,7 +133,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		}
 		if ( !$this->mAllowRefreshSiteStatsTable ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
-			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'badaccess-groups', 'trusted' ) );
+			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'badaccess-groups', implode( ', ', $userGroups ), count( $userGroups ) ) );
 		} elseif ( $status_OK ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
 			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() )->text() );
