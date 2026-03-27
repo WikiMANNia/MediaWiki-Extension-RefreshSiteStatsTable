@@ -15,9 +15,29 @@ namespace MediaWiki\Extension\RefreshSiteStatsTable;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
-use SpecialPage;
-use Xml;
+use MediaWiki\Xml\Xml;
+
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+	if ( !class_exists('MediaWiki\Html\Html') )  class_alias( '\Html', '\MediaWiki\Html\Html' );
+	if ( !class_exists('MediaWiki\Title\Title') )  class_alias( '\Title', '\MediaWiki\Title\Title' );
+}
+
+if ( version_compare( MW_VERSION, '1.41', '<' ) ) {
+	if ( !class_exists('MediaWiki\SpecialPage\SpecialPage') )  class_alias( '\SpecialPage', '\MediaWiki\SpecialPage\SpecialPage' );
+}
+
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	if ( !class_exists('MediaWiki\Context\RequestContext') )  class_alias( '\RequestContext', '\MediaWiki\Context\RequestContext' );
+}
+
+if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
+	if ( !class_exists('MediaWiki\Xml\Xml') )  class_alias( '\Xml', '\MediaWiki\Xml\Xml' );
+}
 
 class SpecialRefreshSiteStatsTable extends SpecialPage {
 
@@ -36,9 +56,15 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	public function __construct() {
 		parent::__construct( 'RefreshSiteStatsTable' );
 
-		$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
-		$this->mDBr = $connection_provider->getReplicaDatabase();
-		$this->mDBw = $connection_provider->getPrimaryDatabase();
+		if ( method_exists( '\MediaWiki\MediaWikiServices', 'getConnectionProvider' ) ) {
+			$connection_provider = MediaWikiServices::getInstance()->getConnectionProvider();
+			$this->mDBr = $connection_provider->getReplicaDatabase();
+			$this->mDBw = $connection_provider->getPrimaryDatabase();
+		} else {
+			$lb = MediaWikiServices::getInstance()->getDBLoadBalancer();
+			$this->mDBr = $lb->getMaintenanceConnectionRef( DB_REPLICA );
+			$this->mDBw = $lb->getConnection( DB_PRIMARY, [], false );
+		}
 		$ctx = RequestContext::getMain();
 		$user = $ctx->getUser();
 		$this->mAllowRefreshSiteStatsTable = (bool)$user->isAllowed( 'AllowRefreshSiteStatsTable' );
@@ -60,7 +86,11 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	 */
 	public function execute( $sub ) {
 		$output = $this->getOutput();
-		$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
+		if ( method_exists( $output, 'setPageTitleMsg' ) ) {
+			$output->setPageTitleMsg( $this->msg( 'refreshsitestatstable-title' ) );
+		} else {
+			$output->setPageTitle( $this->msg( 'refreshsitestatstable-title' ) );
+		}
 		$output->addWikiMsg( 'refreshsitestatstable-intro' );
 
 		$request = $this->getRequest();
@@ -79,7 +109,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	}
 
 	/**
-	 * @param string $action The action of the form
+	 * @param string|null $action The action of the form
 	 */
 	protected function showForm( $action ) {
 
@@ -129,11 +159,12 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 			}
 		} else {
 			$status_OK = false;
+			$anzahl_counted_good = $anzahl_counted_total = $anzahl_counted_images = $anzahl_counted_users = '&nbsp;?';
 			$good_articles_status_msg = $total_pages_status_msg = $images_status_msg = $users_status_msg = $this->mUNKNOWN_msg;
 		}
 		if ( !$this->mAllowRefreshSiteStatsTable ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
-			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'badaccess-groups', implode( ', ', $userGroups ), count( $userGroups ) ) );
+			$intromessage .= Html::rawElement( 'p', [ 'class' => $this->mErrorClass ], $this->msg( 'badaccess-groups', implode( ', ', $userGroups ), count( $userGroups ) ) );
 		} elseif ( $status_OK ) {
 			$submit_button_attrs = array_merge( $submit_button_attrs, $attrs_disabled );
 			$intromessage .= Html::rawElement( 'p', [], $this->msg( 'refreshsitestatstable-status-msg', $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() )->text() );
@@ -169,16 +200,16 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						)
 					) .
 					Html::rawElement( 'td', $input,
-						( $anzahl_counted_good === 0 ) ? '&nbsp;?' : $anzahl_counted_good
+						$anzahl_counted_good
 					) .
 					Html::rawElement( 'td', $input,
-						( $anzahl_counted_total === 0 ) ? '&nbsp;?' : $anzahl_counted_total
+						$anzahl_counted_total
 					) .
 					Html::rawElement( 'td', $input,
-						( $anzahl_counted_images === 0 ) ? '&nbsp;?' : $anzahl_counted_images
+						$anzahl_counted_images
 					) .
 					Html::rawElement( 'td', $input,
-						( $anzahl_counted_users === 0 ) ? '&nbsp;?' : $anzahl_counted_users
+						$anzahl_counted_users
 					)
 				) .
 				Html::rawElement( 'tr', [],
@@ -247,7 +278,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		return;
 	}
 
-	protected function doSubmit() {
+	private function doSubmit() {
 
 		$request = $this->getRequest();
 		$do = $request->getVal( 'wpActionToken' );
@@ -323,19 +354,15 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	}
 
 	/**
-	 * Different description will be shown on Special:SpecialPage depending on
-	 * whether the user can modify the data.
-	 * @return string|Message
+	 * @inheritDoc
 	 */
 	public function getDescription() {
 		$msg = $this->msg( 'refreshsitestatstable-rights' );
-		return $msg;
+		return version_compare( MW_VERSION, '1.41', '<' ) ? $msg->text() : $msg;
 	}
 
 	/**
-	 * Under which header this special page is listed in Special:SpecialPages
-	 *
-	 * @return string
+	 * @inheritDoc
 	 */
 	protected function getGroupName() {
 		return 'wiki';

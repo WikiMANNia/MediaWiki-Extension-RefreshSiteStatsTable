@@ -1,7 +1,7 @@
 {
 	"name": "RefreshSiteStatsTable",
 	"namemsg": "refreshsitestatstable-name",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"author": [
 		"[//wikimannia.org WikiMANNia]"
 	],
@@ -10,7 +10,7 @@
 	"type": "specialpage",
 	"license-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.42.0"
+		"MediaWiki": ">= 1.35.0"
 	},
 	"AvailableRights": [
 		"AllowRefreshSiteStatsTable"
@@ -43,11 +43,11 @@
 	"ExtensionMessagesFiles": {
 		"RefreshSiteStatsTableAlias": "RefreshSiteStatsTable.i18n.alias.php"
 	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\RefreshSiteStatsTable\\": "includes/"
+	},
 	"SpecialPages": {
 		"RefreshSiteStatsTable": "MediaWiki\\Extension\\RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable"
-	},
-	"AutoloadClasses": {
-		"MediaWiki\\Extension\\RefreshSiteStatsTable\\SpecialRefreshSiteStatsTable": "includes/SpecialRefreshSiteStatsTable.php"
 	},
 	"manifest_version": 2
 }
