@@ -5,7 +5,7 @@
 	"refreshsitestatstable-name": "SiteStats Table Refresher",
 	"refreshsitestatstable-desc": "Offers a [[Special:RefreshSiteStatsTable|special page]] for refreshing the value of the fields “ss_good_articles”, “ss_total_pages”, and “ss_users“ in the table “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]”.",
 	"refreshsitestatstable-intro": "Inconsistencies in the “[https://www.mediawiki.org/wiki/Manual:Site_stats_table site_stats]” table can be corrected automatically here.",
-	"refreshsitestatstable-rights": "Correct inconsistencies in the “site_stats” table.",
+	"refreshsitestatstable-rights": "Correct inconsistencies in the “site_stats” table",
 	"refreshsitestatstable-title": "Refresh the table “site_stats”",
 	"refreshsitestatstable-good-articles": "Number of good articles",
 	"refreshsitestatstable-total-pages": "Number of total pages",
@@ -26,5 +26,7 @@
 	"refreshsitestatstable-status-ok-total": "The number of total pages in the MediaWiki database is correct.",
 	"refreshsitestatstable-status-ok-images": "The number of images in the MediaWiki database is correct.",
 	"refreshsitestatstable-status-ok-users": "The number of users in the MediaWiki database is correct.",
-	"refreshsitestatstable-status-error": "Entries in the MediaWiki database are incorrect. The error could not be fixed."
+	"refreshsitestatstable-status-error": "Entries in the MediaWiki database are incorrect. The error could not be fixed.",
+	"action-allowrefreshsitestatstable": "correct inconsistencies in the [[:mw:Manual:site_stats table|site_stats]]” table",
+	"right-allowrefreshsitestatstable": "Correct inconsistencies in the “[[:mw:Manual:site_stats table|site_stats]]” table"
 }

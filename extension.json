@@ -10,29 +10,29 @@
 	"type": "specialpage",
 	"license-name": "GPL-3.0-or-later",
 	"requires": {
-		"MediaWiki": ">= 1.35.0"
+		"MediaWiki": ">= 1.35.3"
 	},
 	"AvailableRights": [
-		"AllowRefreshSiteStatsTable"
+		"allowrefreshsitestatstable"
 	],
 	"GroupPermissions": {
 		"*": {
-			"AllowRefreshSiteStatsTable": false
+			"allowrefreshsitestatstable": false
 		},
 		"user": {
-			"AllowRefreshSiteStatsTable": false
+			"allowrefreshsitestatstable": false
 		},
 		"autoconfirmed": {
-			"AllowRefreshSiteStatsTable": false
+			"allowrefreshsitestatstable": false
 		},
 		"bot": {
-			"AllowRefreshSiteStatsTable": false
+			"allowrefreshsitestatstable": false
 		},
 		"trusted": {
-			"AllowRefreshSiteStatsTable": true
+			"allowrefreshsitestatstable": true
 		},
 		"sysop": {
-			"AllowRefreshSiteStatsTable": true
+			"allowrefreshsitestatstable": true
 		}
 	},
 	"MessagesDirs": {

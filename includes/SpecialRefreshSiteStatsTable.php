@@ -12,32 +12,32 @@
 
 namespace MediaWiki\Extension\RefreshSiteStatsTable;
 
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+	class_exists( 'MediaWiki\Html\Html' ) or class_alias( '\Html', '\MediaWiki\Html\Html' );
+	class_exists( 'MediaWiki\Title\Title' ) or class_alias( '\Title', '\MediaWiki\Title\Title' );
+}
+
+if ( version_compare( MW_VERSION, '1.41', '<' ) ) {
+	class_exists( 'MediaWiki\SpecialPage\SpecialPage' ) or class_alias( '\SpecialPage', '\MediaWiki\SpecialPage\SpecialPage' );
+}
+
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	class_exists( 'MediaWiki\Context\RequestContext' ) or class_alias( '\RequestContext', '\MediaWiki\Context\RequestContext' );
+}
+
+if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
+	class_exists( 'MediaWiki\Xml\Xml' ) or class_alias( '\Xml', '\MediaWiki\Xml\Xml' );
+}
+
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 use MediaWiki\Xml\Xml;
-
-// Class aliases for multi-version compatibility.
-// These need to be in global scope so phan can pick up on them,
-// and before any use statements that make use of the namespaced names.
-if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-	if ( !class_exists('MediaWiki\Html\Html') )  class_alias( '\Html', '\MediaWiki\Html\Html' );
-	if ( !class_exists('MediaWiki\Title\Title') )  class_alias( '\Title', '\MediaWiki\Title\Title' );
-}
-
-if ( version_compare( MW_VERSION, '1.41', '<' ) ) {
-	if ( !class_exists('MediaWiki\SpecialPage\SpecialPage') )  class_alias( '\SpecialPage', '\MediaWiki\SpecialPage\SpecialPage' );
-}
-
-if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-	if ( !class_exists('MediaWiki\Context\RequestContext') )  class_alias( '\RequestContext', '\MediaWiki\Context\RequestContext' );
-}
-
-if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
-	if ( !class_exists('MediaWiki\Xml\Xml') )  class_alias( '\Xml', '\MediaWiki\Xml\Xml' );
-}
 
 class SpecialRefreshSiteStatsTable extends SpecialPage {
 
@@ -67,7 +67,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		}
 		$ctx = RequestContext::getMain();
 		$user = $ctx->getUser();
-		$this->mAllowRefreshSiteStatsTable = (bool)$user->isAllowed( 'AllowRefreshSiteStatsTable' );
+		$this->mAllowRefreshSiteStatsTable = (bool)$user->isAllowed( 'allowrefreshsitestatstable' );
  		$this->mErrorClass   = 'mw-message-box-error';
  		$this->mSuccessClass = 'mw-message-box-success';
 		$this->mERROR_msg   = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
