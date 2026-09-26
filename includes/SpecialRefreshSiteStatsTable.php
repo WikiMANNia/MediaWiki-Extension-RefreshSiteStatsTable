@@ -15,21 +15,40 @@ namespace MediaWiki\Extension\RefreshSiteStatsTable;
 // Class aliases for multi-version compatibility.
 // These need to be in global scope so phan can pick up on them,
 // and before any use statements that make use of the namespaced names.
-if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-	class_exists( 'MediaWiki\Html\Html' ) or class_alias( '\Html', '\MediaWiki\Html\Html' );
-	class_exists( 'MediaWiki\Title\Title' ) or class_alias( '\Title', '\MediaWiki\Title\Title' );
+if ( class_exists( \Html::class ) && /* < 1.40 */
+	!class_exists( \MediaWiki\Html\Html::class, false ) ) {
+	class_alias(
+		\Html::class,
+		\MediaWiki\Html\Html::class
+	);
 }
-
-if ( version_compare( MW_VERSION, '1.41', '<' ) ) {
-	class_exists( 'MediaWiki\SpecialPage\SpecialPage' ) or class_alias( '\SpecialPage', '\MediaWiki\SpecialPage\SpecialPage' );
+if ( class_exists( \Title::class ) && /* < 1.40 */
+	!class_exists( \MediaWiki\Title\Title::class, false ) ) {
+	class_alias(
+		\Title::class,
+		\MediaWiki\Title\Title::class
+	);
 }
-
-if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-	class_exists( 'MediaWiki\Context\RequestContext' ) or class_alias( '\RequestContext', '\MediaWiki\Context\RequestContext' );
+if ( class_exists( \SpecialPage::class ) && /* < 1.41 */
+	!class_exists( \MediaWiki\SpecialPage\SpecialPage::class, false ) ) {
+	class_alias(
+		\SpecialPage::class,
+		\MediaWiki\SpecialPage\SpecialPage::class
+	);
 }
-
-if ( version_compare( MW_VERSION, '1.43', '<' ) ) {
-	class_exists( 'MediaWiki\Xml\Xml' ) or class_alias( '\Xml', '\MediaWiki\Xml\Xml' );
+if ( class_exists( \RequestContext::class ) && /* < 1.42 */
+	!class_exists( \MediaWiki\Context\RequestContext::class, false ) ) {
+	class_alias(
+		\RequestContext::class,
+		\MediaWiki\Context\RequestContext::class
+	);
+}
+if ( class_exists( \Xml::class ) && /* < 1.43 */
+	!class_exists( \MediaWiki\Xml\Xml::class, false ) ) {
+	class_alias(
+		\Xml::class,
+		\MediaWiki\Xml\Xml::class
+	);
 }
 
 use MediaWiki\Context\RequestContext;
@@ -68,8 +87,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 		$ctx = RequestContext::getMain();
 		$user = $ctx->getUser();
 		$this->mAllowRefreshSiteStatsTable = (bool)$user->isAllowed( 'allowrefreshsitestatstable' );
- 		$this->mErrorClass   = 'mw-message-box-error';
- 		$this->mSuccessClass = 'mw-message-box-success';
+ 		$this->mErrorClass   = version_compare( MW_VERSION, '1.38', '<' ) ? 'errorbox'   : 'mw-message-box-error';
+ 		$this->mSuccessClass = version_compare( MW_VERSION, '1.38', '<' ) ? 'successbox' : 'mw-message-box-success';
 		$this->mERROR_msg   = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-error' )->text() . '</span>';
 		$this->mOK_msg      = '<span class="' . $this->mSuccessClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-ok' )->text() . '</span>';
 		$this->mUNKNOWN_msg = '<span class="' . $this->mErrorClass . '" style="display:inline; margin:0; padding:2px;">' . $this->msg( 'refreshsitestatstable-status-msg-unknown' )->text() . '</span>';
