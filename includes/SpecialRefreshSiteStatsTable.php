@@ -326,19 +326,15 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 	}
 
 	/**
-	 * Different description will be shown on Special:SpecialPage depending on
-	 * whether the user can modify the data.
-	 * @return string|Message
+	 * @inheritDoc
 	 */
-	public function getDescription() {
+	function getDescription() {
 		$msg = $this->msg( 'refreshsitestatstable-rights' );
 		return self::isBeforeVersion( '1.41' ) ? $msg->text() : $msg;
 	}
 
 	/**
-	 * Under which header this special page is listed in Special:SpecialPages
-	 *
-	 * @return string
+	 * @inheritDoc
 	 */
 	protected function getGroupName() {
 		return 'wiki';
