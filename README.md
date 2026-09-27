@@ -12,7 +12,7 @@ Refreshes the value of the fields `ss_good_articles`, `ss_total_pages`, and `ss_
 
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki versions `1.35.14`, `1.39.17`, `1.41.2`, `1.42.3`, `1.43.9`, `1.44.2`, and `1.45.4`.
+This extension works from REL1_35 and has been tested up to MediaWiki versions `1.35.14`, `1.39.17`, `1.41.2`, `1.42.3`, `1.43.9`, `1.44.2`, `1.45.4`, and `1.47.0-alpha`.
 
 ## Version history
 
@@ -59,3 +59,7 @@ This extension works from REL1_35 and has been tested up to MediaWiki versions `
 1.6.0
 
 * Refactoring classes, namespace and backward compatibility.
+
+1.7.0
+
+* Added compatibility to MediaWiki v1.47.

@@ -43,20 +43,12 @@ if ( class_exists( \RequestContext::class ) && /* < 1.42 */
 		\MediaWiki\Context\RequestContext::class
 	);
 }
-if ( class_exists( \Xml::class ) && /* < 1.43 */
-	!class_exists( \MediaWiki\Xml\Xml::class, false ) ) {
-	class_alias(
-		\Xml::class,
-		\MediaWiki\Xml\Xml::class
-	);
-}
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
-use MediaWiki\Xml\Xml;
 
 class SpecialRefreshSiteStatsTable extends SpecialPage {
 
@@ -197,25 +189,25 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						'&nbsp;'
 					) .
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-good-articles' )->text(), 'mw-refreshsitestatstable-good-articles'
+						Html::label( $this->msg( 'refreshsitestatstable-good-articles' )->text(), 'mw-refreshsitestatstable-good-articles'
 						)
 					) .
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-total-pages' )->text(), 'mw-refreshsitestatstable-total-pages'
+						Html::label( $this->msg( 'refreshsitestatstable-total-pages' )->text(), 'mw-refreshsitestatstable-total-pages'
 						)
 					) .
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-images' )->text(), 'mw-refreshsitestatstable-images'
+						Html::label( $this->msg( 'refreshsitestatstable-images' )->text(), 'mw-refreshsitestatstable-images'
 						)
 					) .
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-users' )->text(), 'mw-refreshsitestatstable-users'
+						Html::label( $this->msg( 'refreshsitestatstable-users' )->text(), 'mw-refreshsitestatstable-users'
 						)
 					)
 				) .
 				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-db-count' )->text(), 'mw-refreshsitestatstable-db-count'
+						Html::label( $this->msg( 'refreshsitestatstable-db-count' )->text(), 'mw-refreshsitestatstable-db-count'
 						)
 					) .
 					Html::rawElement( 'td', $input,
@@ -233,7 +225,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 				) .
 				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-statistic' )->text(), 'mw-refreshsitestatstable-statistic'
+						Html::label( $this->msg( 'refreshsitestatstable-statistic' )->text(), 'mw-refreshsitestatstable-statistic'
 						)
 					) .
 					Html::rawElement( 'td', $input,
@@ -251,7 +243,7 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 				) .
 				Html::rawElement( 'tr', [],
 					Html::rawElement( 'td', $label,
-						Xml::label( $this->msg( 'refreshsitestatstable-status' )->text(), 'mw-refreshsitestatstable-status'
+						Html::label( $this->msg( 'refreshsitestatstable-status' )->text(), 'mw-refreshsitestatstable-status'
 						)
 					) .
 					Html::rawElement( 'td', $input,
@@ -268,7 +260,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 					)
 				);
 		$form =
-			Xml::fieldset( $topmessage,
+			Html::openElement( 'fieldset' ) . "\n" .
+			Html::element( 'legend', [], $topmessage ) . "\n" .
 				Html::rawElement(
 					'form', [
 						'id' => 'mw-refreshsitestatstable-{$action}form',
@@ -289,8 +282,8 @@ class SpecialRefreshSiteStatsTable extends SpecialPage {
 						Html::hidden( 'wpEditToken', $this->getUser()->getEditToken() ) .
 						Html::hidden( 'wpActionToken', $action )
 					)
-				)
-			);
+				) . "\n" .
+			Html::closeElement( 'fieldset' ) . "\n";
 
 		$this->getOutput()->addHTML( $form );
 
